@@ -8,6 +8,9 @@ const SimpleInput = (props) => {
   // React-TypedInputTracking-SubmittedInputTracking-CleaningInputDataFromInput
   const [enteredName, setEnteredName] = useState('');
 
+  // React-FormSubmissionValidationFeedbackUserExperience
+  const [enteredNameIsValid, setEnteredNameIsValid] = useState(true);
+
   console.log(`Typed value: ${enteredName}`);
 
   // React-TypedInputTracking-SubmittedInputTracking-CleaningInputDataFromInput
@@ -18,6 +21,16 @@ const SimpleInput = (props) => {
   // React-TypedInputTracking-SubmittedInputTracking-CleaningInputDataFromInput
   const formSubmissionHandler = event => {
     event.preventDefault();
+
+    // React-FormSubmissionValidationFeedbackUserExperience
+    if (enteredName.trim() === '') {
+      setEnteredNameIsValid(false);
+      return;
+    };
+
+    // React-FormSubmissionValidationFeedbackUserExperience
+    setEnteredNameIsValid(true);
+
     const enteredValue = nameInputRef.current.value;
 
     console.log(`This is the submitted value: ${enteredValue}`);
@@ -32,10 +45,16 @@ const SimpleInput = (props) => {
     // nameInputRef.current.value = '';
   }
 
+  // React-FormSubmissionValidationFeedbackUserExperience
+  const nameInputClasses = enteredNameIsValid ? 'form-control' : 'form-control invalid';
+
   return (
     // React-TypedInputTracking-SubmittedInputTracking-CleaningInputDataFromInput
     <form onSubmit={formSubmissionHandler}>
-      <div className='form-control'>
+      {/* React-FormSubmissionValidationFeedbackUserExperience */}
+      {/* The nameInputClasses will highlight the input element */}
+      {/* If the input is not valid */}
+      <div className={nameInputClasses}>
         <label htmlFor='name'>Your Name</label>
         <input
           // React-TypedInputTracking-SubmittedInputTracking-CleaningInputDataFromInput
@@ -51,6 +70,8 @@ const SimpleInput = (props) => {
           // With the help of it, you have a controlled input
           value={enteredName}
         />
+        {/* React-FormSubmissionValidationFeedbackUserExperience */}
+        {!enteredNameIsValid && <p className="error-text">Name must not be empty</p>}
       </div>
       <div className="form-actions">
         <button>Submit</button>
