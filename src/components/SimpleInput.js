@@ -1,5 +1,5 @@
 // React-TypedInputTracking-SubmittedInputTracking-CleaningInputDataFromInput
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const SimpleInput = (props) => {
   // React-TypedInputTracking-SubmittedInputTracking-CleaningInputDataFromInput
@@ -9,7 +9,23 @@ const SimpleInput = (props) => {
   const [enteredName, setEnteredName] = useState('');
 
   // React-FormSubmissionValidationFeedbackUserExperience
-  const [enteredNameIsValid, setEnteredNameIsValid] = useState(true);
+  // We set this false initially, because it is actually false.
+  // In order not to show the error messages, we can set this to true
+  // but it will be like cheating. If we want to use this value for
+  // useEffect hook, then since in case we would initially set it to true
+  // some problems may occur.
+  // In order to prevent this, we will initially set it to false but we will
+  // add more hooks.
+  const [enteredNameIsValid, setEnteredNameIsValid] = useState(false);
+
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  const [enteredNameTouched, setEnteredNameTouched] = useState(false);
+
+  useEffect(() => {
+    if(enteredNameIsValid) {
+      console.log('Entered name is valid!');
+    }
+  }, [enteredNameIsValid]);
 
   console.log(`Typed value: ${enteredName}`);
 
@@ -44,6 +60,9 @@ const SimpleInput = (props) => {
     // In React, you should let hooks handle the states.
     // nameInputRef.current.value = '';
   }
+
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched;
 
   // React-FormSubmissionValidationFeedbackUserExperience
   const nameInputClasses = enteredNameIsValid ? 'form-control' : 'form-control invalid';
