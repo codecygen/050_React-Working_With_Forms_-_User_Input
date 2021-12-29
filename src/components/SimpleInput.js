@@ -1,12 +1,19 @@
 // React-TypedInputTracking-SubmittedInputTracking-CleaningInputDataFromInput
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
+
+// React-useRef
+// import { useRef } from 'react';
 
 const SimpleInput = (props) => {
   // React-TypedInputTracking-SubmittedInputTracking-CleaningInputDataFromInput
-  const nameInputRef = useRef();
+  // React-useRef
+  // It is commented out because we dont use it in this project.
+  // const nameInputRef = useRef();
 
   // React-TypedInputTracking-SubmittedInputTracking-CleaningInputDataFromInput
   const [enteredName, setEnteredName] = useState('');
+
+
 
   // React-FormSubmissionValidationFeedbackUserExperience
   // We set this false initially, because it is actually false.
@@ -16,7 +23,16 @@ const SimpleInput = (props) => {
   // some problems may occur.
   // In order to prevent this, we will initially set it to false but we will
   // add more hooks.
-  const [enteredNameIsValid, setEnteredNameIsValid] = useState(false);
+  // Here this section will be commented out to make a leaner code.
+  // We do not really need a hook for "enteredNameIsValid" because 
+  // this section is something that we can simply drive by using the "enteredName"
+  // state.
+  // const [enteredNameIsValid, setEnteredNameIsValid] = useState(false);
+  
+  // Instead use this:
+  const enteredNameisValid = enteredName.trim() !== '';
+
+
 
   // React-Secondary_State_To_Avoid_Workaround_For_Initially_Setting_enteredNameIsValid_To_True
   // Here, we also introduce, touched state. Both enteredNameIsValid and enteredNameIsTouched
@@ -40,11 +56,26 @@ const SimpleInput = (props) => {
   // React-onChange
   const nameInputChangeHandler = event => {
     setEnteredName(event.target.value); 
+
+    // React-FormSubmissionValidationFeedbackUserExperience
+    // Here we get the value from "event.target.value" instead
+    // of "enteredName" as this state will show the old state
+    // and not updated one due to the fact that updating latest state
+    // only occurs in next re-rendering or re-evaluation of the 
+    // "SimpleInput.js"
+    if (event.target.value.trim() !== '') {
+      setEnteredNameIsValid(true);
+    };
   };
 
   // React-onBlur
-  const nameInputBlurHandler = () => {
+  const nameInputBlurHandler = event => {
+    setEnteredNameTouched(true);
 
+    // React-FormSubmissionValidationFeedbackUserExperience
+    if (enteredName.trim() === '') {
+      setEnteredNameIsValid(false);
+    };
   };
 
   // React-TypedInputTracking-SubmittedInputTracking-CleaningInputDataFromInput
@@ -58,15 +89,16 @@ const SimpleInput = (props) => {
     // React-FormSubmissionValidationFeedbackUserExperience
     if (enteredName.trim() === '') {
       setEnteredNameIsValid(false);
-      return;
     };
 
     // React-FormSubmissionValidationFeedbackUserExperience
     setEnteredNameIsValid(true);
 
-    const enteredValue = nameInputRef.current.value;
 
-    console.log(`This is the submitted value: ${enteredValue}`);
+    // React-useRef
+    // It is commented out because we dont use it in this project.
+    // const enteredValue = nameInputRef.current.value;
+    // console.log(`This is the submitted value: ${enteredValue}`);
 
     // This is used to control the "value" key of input
     // So once you submit the form, the input value will be cleaned.
@@ -94,9 +126,16 @@ const SimpleInput = (props) => {
       <div className={nameInputClasses}>
         <label htmlFor='name'>Your Name</label>
         <input
+
+
           // React-TypedInputTracking-SubmittedInputTracking-CleaningInputDataFromInput
           // "ref" key is used by UseRef
-          ref={nameInputRef}
+          // React-useRef
+          // It is commented out because we dont use it in this project.
+          // ref={nameInputRef}
+
+
+
           type='text' 
           id='name' 
           // React-TypedInputTracking-SubmittedInputTracking-CleaningInputDataFromInput
@@ -104,7 +143,7 @@ const SimpleInput = (props) => {
           // React-onChange
           onChange={nameInputChangeHandler} 
           // React-onBlur
-          onBlur={}
+          onBlur={nameInputBlurHandler}
           // React-TypedInputTracking-SubmittedInputTracking-CleaningInputDataFromInput
           // value key is used to control the final input value
           // With the help of it, you have a controlled input
