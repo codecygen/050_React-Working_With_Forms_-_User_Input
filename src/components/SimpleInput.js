@@ -1,6 +1,5 @@
 // React-TypedInputTracking-SubmittedInputTracking-CleaningInputDataFromInput
 import { useState } from 'react';
-// import { useEffect } from 'react';
 
 // React-useRef
 // import { useRef } from 'react';
@@ -30,10 +29,10 @@ const SimpleInput = (props) => {
   // state.
   // const [enteredNameIsValid, setEnteredNameIsValid] = useState(false);
   // We deleted this line of code for refactoring purposes
-  
+
   // Instead use this:
   // This to eliminate an extra hook. Instead we can rely on this.
-  const enteredNameisValid = enteredName.trim() !== '';
+  const enteredNameIsValid = enteredName.trim() !== '';
 
 
 
@@ -48,16 +47,19 @@ const SimpleInput = (props) => {
   // We want to ensure that enteredNameIsValid is false at the beginning. Because it is
   // false.
 
-
-
-  // useEffect(() => {
-  //   if(enteredNameIsValid) {
-  //     console.log('Entered name is valid!');
-  //   }
-  // }, [enteredNameIsValid]);
+  // React-Entire_Form_Validity_Check
+  let formIsValid = false;
+  // React-Entire_Form_Validity_Check
+  // If there is more inputs write all of them.
+  // enteredNameIsValid && enteredAgeIsValid && ...
+  if (enteredNameIsValid) {
+    formIsValid = true;
+  } else {
+    formIsValid = false;
+  }
 
   // React-Secondary_State_To_Avoid_Workaround_For_Initially_Setting_enteredNameIsValid_To_True
-  const nameInputIsInvalid = !enteredNameisValid && enteredNameTouched;
+  const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched;
 
 
   console.log(`Typed value: ${enteredName}`);
@@ -65,7 +67,7 @@ const SimpleInput = (props) => {
   // React-TypedInputTracking-SubmittedInputTracking-CleaningInputDataFromInput
   // React-onChange
   const nameInputChangeHandler = event => {
-    setEnteredName(event.target.value); 
+    setEnteredName(event.target.value);
 
     // React-FormSubmissionValidationFeedbackUserExperience
     // Here we get the value from "event.target.value" instead
@@ -98,7 +100,7 @@ const SimpleInput = (props) => {
     setEnteredNameTouched(true);
 
     // React-FormSubmissionValidationFeedbackUserExperience
-    if (!enteredNameisValid) {
+    if (!enteredNameIsValid) {
       return;
     };
 
@@ -149,12 +151,12 @@ const SimpleInput = (props) => {
 
 
 
-          type='text' 
-          id='name' 
+          type='text'
+          id='name'
           // React-TypedInputTracking-SubmittedInputTracking-CleaningInputDataFromInput
           // onChange key is used by handling instant typing
           // React-onChange
-          onChange={nameInputChangeHandler} 
+          onChange={nameInputChangeHandler}
           // React-onBlur
           onBlur={nameInputBlurHandler}
           // React-TypedInputTracking-SubmittedInputTracking-CleaningInputDataFromInput
@@ -167,7 +169,8 @@ const SimpleInput = (props) => {
         {nameInputIsInvalid && <p className="error-text">Name must not be empty</p>}
       </div>
       <div className="form-actions">
-        <button>Submit</button>
+        {/* React-Entire_Form_Validity_Check */}
+        <button disabled={!formIsValid}>Submit</button>
       </div>
     </form>
   );
