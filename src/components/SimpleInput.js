@@ -1,5 +1,6 @@
 // React-TypedInputTracking-SubmittedInputTracking-CleaningInputDataFromInput
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+// import { useEffect } from 'react';
 
 // React-useRef
 // import { useRef } from 'react';
@@ -28,8 +29,10 @@ const SimpleInput = (props) => {
   // this section is something that we can simply drive by using the "enteredName"
   // state.
   // const [enteredNameIsValid, setEnteredNameIsValid] = useState(false);
+  // We deleted this line of code for refactoring purposes
   
   // Instead use this:
+  // This to eliminate an extra hook. Instead we can rely on this.
   const enteredNameisValid = enteredName.trim() !== '';
 
 
@@ -44,11 +47,18 @@ const SimpleInput = (props) => {
   // useEffect might be needed at the beginning of the form submmission. 
   // We want to ensure that enteredNameIsValid is false at the beginning. Because it is
   // false.
-  useEffect(() => {
-    if(enteredNameIsValid) {
-      console.log('Entered name is valid!');
-    }
-  }, [enteredNameIsValid]);
+
+
+
+  // useEffect(() => {
+  //   if(enteredNameIsValid) {
+  //     console.log('Entered name is valid!');
+  //   }
+  // }, [enteredNameIsValid]);
+
+  // React-Secondary_State_To_Avoid_Workaround_For_Initially_Setting_enteredNameIsValid_To_True
+  const nameInputIsInvalid = !enteredNameisValid && enteredNameTouched;
+
 
   console.log(`Typed value: ${enteredName}`);
 
@@ -63,9 +73,9 @@ const SimpleInput = (props) => {
     // and not updated one due to the fact that updating latest state
     // only occurs in next re-rendering or re-evaluation of the 
     // "SimpleInput.js"
-    if (event.target.value.trim() !== '') {
-      setEnteredNameIsValid(true);
-    };
+    // if (event.target.value.trim() !== '') {
+    //   setEnteredNameIsValid(true);
+    // };
   };
 
   // React-onBlur
@@ -73,9 +83,10 @@ const SimpleInput = (props) => {
     setEnteredNameTouched(true);
 
     // React-FormSubmissionValidationFeedbackUserExperience
-    if (enteredName.trim() === '') {
-      setEnteredNameIsValid(false);
-    };
+    // if (enteredName.trim() === '') {
+    //   setEnteredNameIsValid(false);
+    // };
+    // We deleted this line of code for refactoring purposes
   };
 
   // React-TypedInputTracking-SubmittedInputTracking-CleaningInputDataFromInput
@@ -87,12 +98,15 @@ const SimpleInput = (props) => {
     setEnteredNameTouched(true);
 
     // React-FormSubmissionValidationFeedbackUserExperience
-    if (enteredName.trim() === '') {
-      setEnteredNameIsValid(false);
+    if (!enteredNameisValid) {
+      return;
     };
 
+    console.log(`Submitted value is ${enteredName}.`);
+
     // React-FormSubmissionValidationFeedbackUserExperience
-    setEnteredNameIsValid(true);
+    // setEnteredNameIsValid(true);
+    // We deleted this line of code for refactoring purposes
 
 
     // React-useRef
@@ -108,10 +122,9 @@ const SimpleInput = (props) => {
     // Because this is about manipulating the DOM.
     // In React, you should let hooks handle the states.
     // nameInputRef.current.value = '';
-  }
 
-  // React-Secondary_State_To_Avoid_Workaround_For_Initially_Setting_enteredNameIsValid_To_True
-  const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched;
+    setEnteredNameTouched(false);
+  }
 
   // React-FormSubmissionValidationFeedbackUserExperience
   const nameInputClasses = nameInputIsInvalid ? 'form-control invalid' : 'form-control';
